@@ -1,4 +1,4 @@
-language: x86-64 assembly
+`language: x86-64 assembly`
 
 - [X] putstr
 - [X] strlen
