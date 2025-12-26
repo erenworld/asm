@@ -1,6 +1,6 @@
 language: x86-64 assembly
 
-- [ ] putstr
+- [X] putstr
 - [ ] strlen
 - [ ] strchr
 - [ ] memset
@@ -13,9 +13,38 @@ language: x86-64 assembly
 - [ ] strstr
 - [ ] strpbrk
 - [ ] strcspn
+- [ ] read
+- [ ] write
+- [ ] exit
+- [ ] atoi
+malloc minimal via brk
 
-bonus
-- read
-- write
-- ARM
-- IO
+free (liste chaînée simple)
+
+realloc
+
+calloc
+open
+
+close
+
+lseek
+
+stat
+
+fstat
+memcmp
+
+bzero
+
+strcpy
+
+strncpy
+
+strlcpy
+
+strcat
+
+strncat
+
+strdup
