@@ -1,6 +1,6 @@
 `language: x86-64 assembly`
 
-[computer](https://i.imgur.com/Kpt029O_d.jpeg?maxwidth=520&shape=thumb&fidelity=high)
+![computer](https://i.imgur.com/Kpt029O_d.jpeg?maxwidth=520&shape=thumb&fidelity=high)
 
 - [X] putstr
 - [X] strlen
