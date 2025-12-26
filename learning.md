@@ -616,7 +616,53 @@ When it occurs
 - The caller may rely on r13 staying unchanged
 - This silently corrupts the caller’s state
 
+#### What is the connection between rax, eax, ax, ah, and al?
+different views of the same physical CPU register on x86/64.
+smaller names refer to lower portions of the larger one.
 
+|--------------------------- rax (64 bits) ---------------------------|
+|           eax (32 bits)            |
+|     ax (16 bits)      |
+| ah (8) | al (8) |
+
+rax: full 64-bit register
+eax: lower 32 bits of rax
+ax: lower 16 bits of eax 
+ah: high 8 bits of ax (bits 8–15)
+al: low 8 bits of ax (bits 0–7)
+
+###### Rules
+- if you write to `eax`, the upper 32 bits of `rax` are automaticcaly set to zero. `mov eax, 1  rax == 0x0000001`
+- writing to `ax, ah, or al` does NOT zero upper bits. Only those specific bits are modified; the rest of rax sta s unchanged.
+- all names refer to the same hardware register. Changing one affects the others because they overlap.
+
+al/ah/ax → from 8086 (16-bit)
+eax → added with 80386 (32-bit)
+rax → added with x86-64
+
+#### if rax = 0x1122334455667788. What are al, ah, ax, eax?
+0x11 22 33 44 55 66 77 88
+
+al = dernier byte -> 88 
+ah = byte au dessus de al -> 77 
+ax = 2 derniers bytes ensemble -> 77 88
+eax = 4 derniers bytes 55 66 77 88
+
+#### logiciel 32-bit vs 64-bit (low-level) 
+Quand on te propose un logiciel en 32 bits ou 64 bits, ça parle de l’architecture CPU ciblée par le binaire.
+La taille des registres généraux et des adresses mémoire changent.
+
+32 bits
+- registres : eax, ebx, ecx, …
+- taille d’un pointeur : 32 bits
+
+64 bits
+- registres : rax, rbx, rcx, …
+- taille d’un pointeur : 64 bits
+
+`void *p;`
+en 32 bits → sizeof(p) = 4
+en 64 bits → sizeof(p) = 8
 
 
 # Checklist
@@ -641,3 +687,98 @@ When it occurs
 - neg
 - call, ret
 - push, pop
+
+## Function Definitions
+
+### `exit`
+Accepts an exit code and terminates the current process.
+
+---
+
+### `string_length`
+Accepts a pointer to a string and returns its length.
+
+---
+
+### `print_string`
+Accepts a pointer to a null-terminated string and prints it to stdout.
+
+---
+
+### `print_char`
+Accepts a character code directly as its first argument and prints it to stdout.
+
+---
+
+### `print_newline`
+Prints a character with code `0xA`.
+
+---
+
+### `print_uint`
+Outputs an unsigned 8-byte integer in decimal format.
+
+**Implementation note:**  
+It is recommended to create a buffer on the stack and store the division results there.  
+Each time, divide the current value by 10 and store the corresponding digit in the buffer.  
+Each digit must be converted to its ASCII code (e.g. `0x04` becomes `0x34`).
+
+---
+
+### `print_int`
+Outputs a signed 8-byte integer in decimal format.
+
+---
+
+### `read_char`
+Reads one character from stdin and returns it.  
+If the end of the input stream occurs, returns `0`.
+
+---
+
+### `read_word`
+Accepts a buffer address and its size as arguments.  
+Reads the next word from stdin (skipping whitespaces) into the buffer.
+
+- Stops and returns `0` if the word is too large for the buffer.
+- Otherwise returns the buffer address.
+- The resulting string is null-terminated.
+
+---
+
+### `parse_uint`
+Accepts a null-terminated string and attempts to parse an unsigned number from its beginning.
+
+- Parsed number is returned in `rax`
+- Number of parsed characters is returned in `rdx`
+
+---
+
+### `parse_int`
+Accepts a null-terminated string and attempts to parse a signed number from its beginning.
+
+- Parsed number is returned in `rax`
+- Number of parsed characters (including the sign, if present) is returned in `rdx`
+- No spaces are allowed between the sign and the digits
+
+---
+
+### `string_equals`
+Accepts two pointers to strings and compares them.
+
+- Returns `1` if they are equal
+- Returns `0` otherwise
+
+---
+
+### `string_copy`
+Accepts:
+- a pointer to a source string
+- a pointer to a destination buffer
+- the buffer length
+
+Copies the string into the destination buffer.
+
+- Returns the destination address if the string fits
+- Returns `0` otherwise
+
