@@ -2,11 +2,11 @@ global strlen
 
 section .text
   strlen:
-    xor rcx, rcx    ; xor = OR exclusif  0,0=0  1,0=1  1,1=0   rcx XOR rcx  met le flag 
-  
-  .loop:            ; un label
+    xor rcx, rcx
+
+  .loop:
     cmp byte [rdi + rcx], 0
-    je .end             ; saute si ZF = 1 (égal)
+    je .end
     inc rcx
     jmp .loop
 
