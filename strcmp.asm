@@ -16,7 +16,7 @@ section .text
   .diff:
     sub rax, [rsi]  ; return diff
   .end:
-    reti
+    ret
 
 
 ; Compare the characters of two strings.
