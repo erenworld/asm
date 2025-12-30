@@ -3,7 +3,7 @@ language: x86-64 assembly
 
 LD_PRELOAD
 
-- strlen
+[x] - strlen
 - strchr
 - memset
 - memcpy
