@@ -12,9 +12,9 @@ LD_PRELOAD
 - [ ] strncmp
 - [ ] strcasecmp
 - [ ] rindex
-- strstr
-- strpbrk
-- strcspn
+- [ ] strstr
+- [ ] strpbrk
+- [ ] strcspn
 
 bonus
 - read
